@@ -1,4 +1,5 @@
 # Lab report — Practice #03, Requirements Engineering with AI
+# WEEK 03 PR CHECKLINE
 
 Fill in every section. **Do not delete or renumber the headings** — the README points at them and a
 missing heading reads as a missing section.
