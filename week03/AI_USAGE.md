@@ -1,4 +1,5 @@
 # AI Usage Disclosure — Week 03
+# WEEK 03 PR CHECKLINE
 
 Required by the course academic policy (Generative AI use level **D** — AI-integrated).
 AI use is expected in this lab. You remain responsible for the accuracy, testing and integrity of

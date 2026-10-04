@@ -1,0 +1,35 @@
+@startuml
+left to right direction
+title Smart Campus - Room Booking (use cases, revised)
+
+actor Student
+actor Administrator
+
+rectangle "Smart Campus Room Booking" {
+  usecase "View room availability" as UC_View
+  usecase "Book room" as UC_Book
+  usecase "Cancel booking" as UC_Cancel
+  usecase "Block room" as UC_Block
+  usecase "Unblock room" as UC_Unblock
+  usecase "Review usage" as UC_Usage
+}
+
+' US-02
+Student --> UC_View
+' US-01
+Student --> UC_Book
+' US-03 (own bookings only)
+Student --> UC_Cancel
+' US-04
+Administrator --> UC_Block
+' US-05
+Administrator --> UC_Unblock
+' US-06
+Administrator --> UC_Usage
+
+note right of UC_Book
+  R1 time range, R2 no overlap, R3 room not blocked
+  are checked inside Book room.
+  R4: success produces a confirmation.
+end note
+@enduml
