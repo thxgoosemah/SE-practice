@@ -1,0 +1,42 @@
+@startuml
+title Smart Campus - Domain Class Diagram (revised)
+
+enum BookingStatus {
+  ACTIVE
+  CANCELLED
+}
+
+class Student {
+  - studentId : String
+  - name : String
+}
+
+class Room {
+  - roomId : String
+  - name : String
+  - capacity : int
+  - blocked : boolean
+  + block() : void
+  + unblock() : void
+}
+
+class Booking {
+  - bookingId : String
+  - start : DateTime
+  - end : DateTime
+  - status : BookingStatus
+  - confirmationId : String
+  + overlaps(other : Booking) : boolean
+  + cancel() : void
+}
+
+Student "1" -- "0..*" Booking : makes
+Room "1" -- "0..*" Booking : is reserved by
+
+note right of Booking
+  R2: active bookings for the same room must not overlap.
+  Touching bookings (one ends when the next starts) do not overlap.
+  R1: start in the future, 0 < (end - start) <= 2 hours.
+  R4: confirmationId is set when a booking is created successfully.
+end note
+@enduml

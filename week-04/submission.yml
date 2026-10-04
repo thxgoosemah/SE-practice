@@ -1,0 +1,55 @@
+# week-04/submission.yml — your declaration for this lab.
+#
+# Facts only. Every explanation goes in lab-report.md; nothing here repeats prose.
+# Fill every value. Check it before you push:
+#
+#     python tests/validate_submission.py
+#
+# The validator checks shape, never quality. A green run is the floor, not the grade.
+# If you cannot run Python, fill the file by hand against the comments — a malformed
+# file costs you nothing if the content is there.
+
+schema: 1
+week: "04"
+
+student:
+  name: "Zhomartuly Zhanibek"
+  student_id: "24B031040"
+  github: "thxgoosemah"
+
+assistant:
+  tool: "Claude"
+  model: "Claude Sonnet 5.5 (claude-sonnet-5-5)"
+
+counts:
+  behaviour_diagram: sequence
+  stories_source: reference
+  use_cases: 6
+  change_log_rows: 6
+
+checker:
+  pass: 37
+  fail: 0
+  error: 0
+  commit: "1a437af"
+  kept_fails: []
+
+assumptions:
+  overlap_touching_bookings: allowed
+  blocking_a_booked_room: keep-bookings
+
+traceability:
+  use_cases_not_traced: []
+  rules_not_shown: []
+
+review_findings:
+  - "Administrator -> View room availability had no story: US-02 is a student story, link removed"
+  - "Validate booking rules and Send confirmation use cases were system steps, not goals (US-01, R4), removed"
+  - "Student.bookRoom() was workflow on a domain class; it belongs to BookingService (US-01), removed"
+  - "R2 note was attached to Room instead of Booking, moved to Booking (R2)"
+  - "isAvailable(roomId, start, end) hid R3 and R2 in one message, split into findRoom with alt room blocked (R3) and findActiveBookings with alt unavailable (R2)"
+
+honesty:
+  originals_unedited: yes
+  can_explain_everything_submitted: yes
+  ai_usage_disclosed: yes

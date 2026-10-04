@@ -1,4 +1,5 @@
 # Traceability — use cases → stories → criteria
+# WEEK 03 PR CHECKLINE
 
 One row per use case. All six rows stay, even the ones with nothing behind them: an empty cell is a
 finding you report, not a failure you hide. Use real IDs, comma-separated; write `none` where there
