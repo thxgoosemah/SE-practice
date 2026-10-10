@@ -1,0 +1,53 @@
+# week-05/submission.yml — your declaration for this lab.
+#
+# Facts only. Every explanation goes in lab-report.md; nothing here repeats prose.
+# Fill every value. Check it before you push:
+#
+#     python tests/validate_submission.py
+#
+# The validator checks shape, never quality. A green run is the floor, not the grade.
+# If you cannot run Python, fill the file by hand against the comments — a malformed
+# file costs you nothing if the content is there.
+
+schema: 1
+week: "05"
+student:
+  name: Жағыпар Дидар Қанатұлы
+  student_id: 24B031027         # TODO (you): как в записях KBTU, например 00X000000
+  github: ZhagiparIIDidar             # TODO (you): ваш логин GitHub
+
+assistant:
+  tool: Claude
+  model: Claude Sonnet 5.5
+
+language:
+  name: python
+  path: A
+
+counts:
+  tests: 21            # TODO (you): сверьте с "Ran N tests" в вашем прогоне
+  v1_changed: no       # TODO (you): оставьте no, если после исправления отступа booking.py = booking_v1.py (проверьте строкой "identical to your final: yes" в чекере)
+  change_log_rows: 1
+
+checker:
+  pass: 32               # TODO (you): из ПОСЛЕДНЕГО запуска чекера. Сейчас вывод был 8 / 2 / 22, но он устарел (IndentationError)
+  fail: 0
+  error: 0
+  commit: 7fdba22             # TODO (you): git rev-parse --short HEAD на коммите, где запускали чекер
+  known_fails: []      # TODO (you): ID, которые остались FAIL или ERROR в последнем прогоне; пусто только если прогон чистый
+
+assumptions:
+  non_integer_time: not-handled
+
+carried:
+  week04_touching: allowed
+
+review_findings:
+  - "F1-F10: the checker ran v1 and it passed all ten, so v1 satisfies AC1-AC5 on the fixed inputs"
+  - "AC1: the bound 0 <= start can never be the only reason for a rejection, because start > now already covers it (now >= 0)"
+  - "v1: the assistant's critique found no defect; all three of its points (blocked truthiness, tuple format, 0 <= start) were rejected with reasons from the contract and AC5"
+
+honesty:
+  v1_unedited: yes     # TODO (you): оставьте yes, только если booking_v1.py совпадает с кодом из чата посимвольно
+  can_explain_overlap_without_ai: no   # TODO (you): yes или no, отвечайте честно
+  ai_usage_disclosed: yes               # TODO (you): yes, только когда AI_USAGE.md заполнен
