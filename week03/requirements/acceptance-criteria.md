@@ -1,4 +1,6 @@
 # Acceptance criteria — three selected stories
+# WEEK 03 PR CHECKLINE
+
 
 Assumptions first, then the criteria. Each block names the story it belongs to. 3 to 5 criteria per
 story, every one in Given / When / Then form, and every set covers a validation or error case — not
