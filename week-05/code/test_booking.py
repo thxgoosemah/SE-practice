@@ -1,90 +1,93 @@
-import copy
 import unittest
 from booking import can_book
 
-BASE = [(600, 660)]  # 10:00-11:00; base input: now=540, blocked=False
+# Base input unless a test says otherwise: now=540, blocked=False, existing=[(600, 660)]
 
 
 class BookingTests(unittest.TestCase):
-    # ---- the six table cases ----
-    def test_touching_end_is_allowed(self):
-        result = can_book(660, 720, 540, False, [(600, 660)])
-        self.assertIs(result, True)  # AC4
+    # --- the six cases from the handout ---
+    def test_touching_end_is_allowed(self):  # AC4
+        self.assertIs(can_book(660, 720, 540, False, [(600, 660)]), True)
 
-    def test_partial_overlap_rejected(self):
-        self.assertIs(can_book(630, 690, 540, False, BASE), False)  # AC4
+    def test_overlap_is_rejected(self):  # AC4
+        self.assertIs(can_book(630, 690, 540, False, [(600, 660)]), False)
 
-    def test_blocked_room_rejected(self):
-        self.assertIs(can_book(660, 720, 540, True, BASE), False)  # AC3
+    def test_blocked_room_is_rejected(self):  # AC3
+        self.assertIs(can_book(660, 720, 540, True, [(600, 660)]), False)
 
-    def test_exactly_two_hours_allowed(self):
-        self.assertIs(can_book(720, 840, 540, False, BASE), True)  # AC2
+    def test_exactly_two_hours_is_allowed(self):  # AC2
+        self.assertIs(can_book(720, 840, 540, False, [(600, 660)]), True)
 
-    def test_over_two_hours_rejected(self):
-        self.assertIs(can_book(720, 841, 540, False, BASE), False)  # AC2
+    def test_over_two_hours_is_rejected(self):  # AC2
+        self.assertIs(can_book(720, 841, 540, False, [(600, 660)]), False)
 
-    def test_start_equal_now_rejected(self):
-        self.assertIs(can_book(540, 570, 540, False, BASE), False)  # AC1
+    def test_start_equal_to_now_is_rejected(self):  # AC1 (start > now)
+        self.assertIs(can_book(540, 570, 540, False, [(600, 660)]), False)
 
-    # ---- start versus now ----
-    def test_start_before_now_rejected(self):
-        self.assertIs(can_book(500, 530, 540, False, BASE), False)  # AC1
+    # --- zero-length and reversed times ---
+    def test_zero_length_is_rejected(self):  # AC1 (start < end)
+        self.assertIs(can_book(700, 700, 540, False, [(600, 660)]), False)
 
-    def test_start_one_minute_after_now_allowed(self):
-        self.assertIs(can_book(541, 560, 540, False, BASE), True)  # AC1
+    def test_reversed_times_are_rejected(self):  # AC1 (start < end)
+        self.assertIs(can_book(720, 700, 540, False, [(600, 660)]), False)
 
-    # ---- zero-length and reversed ----
-    def test_zero_length_rejected(self):
-        self.assertIs(can_book(700, 700, 540, False, BASE), False)  # AC1 start<end
+    # --- the day bounds ---
+    def test_negative_start_is_rejected(self):  # AC1 (0 <= start)
+        self.assertIs(can_book(-10, 30, 0, False, []), False)
 
-    def test_reversed_times_rejected(self):
-        self.assertIs(can_book(800, 700, 540, False, BASE), False)  # AC1 start<end
+    def test_end_after_midnight_is_rejected(self):  # AC1 (end <= 1440); duration is only 41
+        self.assertIs(can_book(1400, 1441, 540, False, []), False)
 
-    # ---- day bounds ----
-    def test_end_at_1440_allowed(self):
-        self.assertIs(can_book(1380, 1440, 540, False, BASE), True)  # AC1 end<=1440
+    def test_end_exactly_1440_is_allowed(self):  # AC1 (end <= 1440)
+        self.assertIs(can_book(1380, 1440, 540, False, []), True)
 
-    def test_end_after_1440_rejected(self):
-        # duration 61, no overlap: only end<=1440 can reject it
-        self.assertIs(can_book(1380, 1441, 540, False, BASE), False)  # AC1
+    def test_start_one_minute_after_now_is_allowed(self):  # AC1 (start > now)
+        self.assertIs(can_book(541, 571, 540, False, [(600, 660)]), True)
 
-    # ---- existing: empty and several ----
-    def test_empty_existing_allowed(self):
-        self.assertIs(can_book(600, 660, 540, False, []), True)  # AC4
+    # --- empty list and several bookings ---
+    def test_empty_existing_is_allowed(self):  # AC4
+        self.assertIs(can_book(700, 760, 540, False, []), True)
 
-    def test_gap_between_several_bookings_allowed(self):
-        existing = [(600, 660), (700, 760), (900, 960)]
-        self.assertIs(can_book(780, 840, 540, False, existing), True)  # AC4
+    def test_several_existing_fits_in_gap(self):  # AC4 (touches both neighbours)
+        existing = [(600, 660), (720, 780), (900, 960)]
+        self.assertIs(can_book(660, 720, 540, False, existing), True)
 
-    def test_overlap_with_last_of_several_rejected(self):
-        existing = [(600, 660), (700, 760), (900, 960)]
-        self.assertIs(can_book(910, 950, 540, False, existing), False)  # AC4
+    def test_several_existing_overlaps_middle_one(self):  # AC4
+        existing = [(600, 660), (720, 780), (900, 960)]
+        self.assertIs(can_book(700, 760, 540, False, existing), False)
 
-    # ---- other overlap relationships ----
-    def test_inside_existing_rejected(self):
-        self.assertIs(can_book(615, 645, 540, False, BASE), False)  # AC4
+    def test_several_existing_overlaps_last_one(self):  # AC4 (the last item is checked too)
+        existing = [(600, 660), (720, 780), (900, 960)]
+        self.assertIs(can_book(950, 1010, 540, False, existing), False)
 
-    def test_contains_existing_rejected(self):
-        self.assertIs(can_book(570, 690, 540, False, BASE), False)  # AC4
+    # --- the other overlap relationships ---
+    def test_touching_start_is_allowed(self):  # AC4
+        self.assertIs(can_book(540, 600, 500, False, [(600, 660)]), True)
 
-    def test_touching_start_is_allowed(self):
-        self.assertIs(can_book(570, 600, 540, False, BASE), True)  # AC4
+    def test_request_inside_existing_is_rejected(self):  # AC4
+        self.assertIs(can_book(610, 640, 540, False, [(600, 660)]), False)
 
-    def test_identical_interval_rejected(self):
-        self.assertIs(can_book(600, 660, 540, False, BASE), False)  # AC4
+    def test_request_contains_existing_is_rejected(self):  # AC4
+        self.assertIs(can_book(590, 700, 540, False, [(600, 660)]), False)
 
-    # ---- input unchanged ----
-    def test_existing_unchanged_when_true(self):
-        existing = [(900, 960), (600, 660), (700, 760)]  # deliberately unsorted
-        snapshot = copy.deepcopy(existing)
-        self.assertIs(can_book(780, 840, 540, False, existing), True)
-        self.assertEqual(existing, snapshot)  # AC5
+    def test_identical_interval_is_rejected(self):  # AC4
+        self.assertIs(can_book(600, 660, 540, False, [(600, 660)]), False)
 
-    def test_existing_unchanged_when_false(self):
-        existing = [(900, 960), (600, 660), (700, 760)]
-        snapshot = copy.deepcopy(existing)
-        self.assertIs(can_book(630, 690, 540, False, existing), False)
-        self.assertEqual(existing, snapshot)  # AC5
+    def test_overlap_at_start_side_is_rejected(self):  # AC4
+        self.assertIs(can_book(570, 630, 540, False, [(600, 660)]), False)
+
+    # --- unchanged input ---
+    def test_existing_is_not_modified_on_accept(self):  # AC5
+        existing = [(720, 780), (600, 660)]
+        snapshot = list(existing)
+        can_book(660, 720, 540, False, existing)
+        self.assertEqual(existing, snapshot)
+
+    def test_existing_is_not_modified_on_reject(self):  # AC5
+        existing = [(720, 780), (600, 660)]
+        snapshot = list(existing)
+        can_book(630, 690, 540, False, existing)
+        self.assertEqual(existing, snapshot)
 
 
 if __name__ == "__main__":
