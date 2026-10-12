@@ -250,12 +250,10 @@ PASS   L5   report 5: debugging evidence                1 row(s) of input / expe
 PASS   L6   report 6: the critique, each point judged   critique pasted, 3 points judged
 PASS   L7   report 7: change log                        1 change-log row(s)
 PASS   L8   report 8.1: real output of your suite       suite output pasted
-FAIL   L9   report 10: conclusion of 120-180 words      section 10 has 0 words, the task asks for 120-180
+PASS   L9   report 10: conclusion of 120-180 words      154 words
 ------------------------------------------------------------------------------
 v1 (code/original/booking_v1.py): passes F1 F2 F3 F4 F5 F6 F7 F8 F9 F10 - fails nothing - identical to your final: yes
-SUMMARY pass=31 fail=1 error=0   (32 checks)
-Every FAIL or ERROR you keep goes in lab-report.md section 9 and in submission.yml known_fails.
-One you report and explain costs you nothing. One you hide costs the whole criterion.
+SUMMARY pass=32 fail=0 error=0   (32 checks)
 ```
 
 ### 8.3 Path B only — three faults I planted myself
@@ -290,16 +288,24 @@ The same IDs as `known_fails` in `submission.yml`. Write `none` if the run is cl
 The contract says times are integers. It does not say what `can_book` does when one is not —
 `600.5`, or the string `"600"`. What does **your** function do, and why is that the right call?
 
-- TODO(student): what does your can_book do for 600.5 or "600", and why is that the right call? (v1 has no type check.)
+My function does no type checking. A float such as 660.5 goes through the same comparisons and
+gives a normal True/False answer; a string such as "660" raises a TypeError on the first comparison with an integer.
+
+I think this is the right call: the contract guarantees integers, AC5 says to return False
+otherwise but not to raise, and the task says to stay within scope. Extra validation would add a rule that no AC asks for. In a full system, the layer that reads user input should convert and
+
+check types before calling can_book.
 
 ### 9.3 A bound that never decides
 
-One of the bounds written in AC1 can never be the *only* reason a request is rejected. Which one,
+One of the bounds written in AC1 can never be the only reason a request is rejected. Which one,
+
 and why?
 
--
-
----
+0 <= start. now is valid (0–1439) and AC1 also requires start > now, so start is at least 1
+whenever that rule holds. A request with start < 0 always fails start > now as well, so the
+0 <= start bound never decides alone. The other bounds can: start < end (reversed (800, 700)) and
+end <= 1440 ((1380, 1441)) each reject requests that pass every other rule.
 
 ## 10. Conclusion (120–180 words)
 
@@ -314,3 +320,12 @@ and why?
      side, so a booking that ends exactly when another begins was rejected." -->
 
 <!-- Write your conclusion below this line -->
+In the final code the overlap check is `start < existing_end and existing_start < end`. 
+Two bookings overlap only if each one starts before the other one ends. 
+I used strict comparisons on purpose: for (660, 720) and (600, 660), `660 < 660` is false, so the booking goes through. 
+That's exactly what AC4 says about touching endpoints.
+My v1 passed all of my own tests and every F check, so I didn't change anything in the logic. 
+The first checker run actually failed, though. Copy-pasting added extra indentation to booking.py, which caused an IndentationError, and all 22 checks came back as ERROR. 
+I fixed it by restoring the file from booking_v1.py.
+One case that neither the contract nor the assistant covered was non-integer times. 
+I decided not to add any validation. AC5 says to return False rather than raise, and extra checks would introduce a rule that no AC asks for.

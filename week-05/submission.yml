@@ -52,7 +52,7 @@ carried:
   # What you declared in week-04/submission.yml under overlap_touching_bookings.
   # AC4 settles it this week: touching endpoints are allowed. If you said not-allowed, that is a
   # finding for lab-report.md §1 — not a penalty.
-  week04_touching:     # allowed | not-allowed | not-submitted
+  week04_touching: allowed 
 
 review_findings:
   # Three or more. One line each, and each one names what it is about: an AC, a check ID,
@@ -65,5 +65,5 @@ review_findings:
 
 honesty:
   v1_unedited: yes                       # yes | no   code/original/ holds the assistant's first answer, untouched
-  can_explain_overlap_without_ai:    # yes | no   you will be asked in class
+  can_explain_overlap_without_ai: yes
   ai_usage_disclosed: yes                # yes | no   AI_USAGE.md is complete

@@ -17,10 +17,9 @@ including anything an AI tool produced.
 
 **`code/original/` holds the assistant's first answer exactly as returned:** yes
 
-**Everything I submitted, I can explain and defend in class — including the overlap condition:** yes / no
+**Everything I submitted, I can explain and defend in class — including the overlap condition:** yes
 
 **Anything I accepted from the AI without fully understanding it:**
-<!-- Name the file and the line. An honest entry here costs far less than a blank one that turns out to be untrue. -->
 
-Signed: <your name>
-Date:
+Signed: Zhomartuly Zhanibek
+Date: 12.10.2026
