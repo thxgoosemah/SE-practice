@@ -1,0 +1,50 @@
+# SIS #02 — the declaration. FACTS ONLY: every explanation stays in report.md.
+#
+# Fill this in LAST, after your final run of the checker, then validate it:
+#     python tests/check_sis.py
+#     python tests/validate_submission.py
+#
+# Your checker numbers are re-run by the instructor at the head of your pull request.
+# Numbers that do not match what that commit produces cost the whole workflow criterion.
+# A FAIL you report honestly — here and under known_fails — costs nothing extra.
+#
+# Format rules: two spaces for indentation, never tabs. Leave the keys exactly as they are.
+
+schema: 1
+assignment: "sis-02"            # do not edit
+
+student:
+  name:                         # as in the university register
+  student_id:                   # e.g. 00X000000
+  group:                        # your group code, as in the timetable
+  github:                       # username only, not a URL
+
+assistant:
+  tool:                         # e.g. ChatGPT (web), Claude.ai, Gemini app, DeepSeek chat
+  model:                        # the exact model with its version, as the tool shows it in B1;
+                                # if the tool does not show it, write: not displayed
+
+checker:                        # from your LAST run of python tests/check_sis.py
+  pass:
+  fail:
+  error:
+  commit:                       # git rev-parse --short HEAD, run right after that checker run
+
+counts:                         # copy from report.md; the validator re-measures every one
+  stories:                      # user stories with a statement (3)
+  criteria:                     # acceptance criteria with Given / When / Then (6)
+  exchanges:                    # B-sections in Appendix B (4 or more)
+  review_decisions:             # complete rows in section 7 (3 or more)
+  source_checks:                # complete rows in the source-checks table (2 or more)
+  explanation_words:            # "section 8 (Modeling explanation): N words"
+  reflection_words:             # "section 9 (Reflection): N words"
+
+walkthroughs:                   # your verdict for each case in section 6: pass or fail
+  T1:
+  T2:
+  T3:
+  T4:
+
+known_fails: []                 # the ID of every check that is still FAIL or ERROR in your last
+                                # run, e.g. [W1, SQ8] — and explain each one in report.md, as a row
+                                # of section 7. [] when the checker is clean.

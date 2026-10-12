@@ -1,0 +1,4 @@
+' SIS #02 — your FINAL class diagram goes here, as PlantUML (@startuml … @enduml).
+' The file is classes.puml (plural), not class.puml as in Week 04.
+' Start from the AI's original in models/original/classes.puml, apply your accepted review
+' decisions, then render it to models/img/classes.png (or .svg). README section 6.

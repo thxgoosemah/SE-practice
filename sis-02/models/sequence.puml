@@ -1,0 +1,3 @@
+' SIS #02 — your FINAL sequence diagram goes here, as PlantUML (@startuml … @enduml).
+' Start from the AI's original in models/original/sequence.puml, apply your accepted review
+' decisions, then render it to models/img/sequence.png (or .svg). README section 5.
