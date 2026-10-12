@@ -146,12 +146,13 @@
 <!-- Written BEFORE you run Prompt A, committed and pushed in your first commit, and never
      edited afterwards. This is what you paste into Prompt A as "My initial assumptions". -->
 
-**Scope:** (write here)
-
+**Scope:** Student takes it from the requirements: browses the catalog, selects an offering, and requests registration. 
+After that student recall R2-R5: checks availability and for duplicates, creates a record, and returns a confirmation or the reason for rejection.
+Five points from the problem are: payments, prerequisites, timetable clashes, waiting lists, cancellation.
 **Initial assumptions:**
 
-1. (write here)
-2. (write here)
+1. Available places equal the offering's capacity minus its current number of enrollments.
+2. If two students request the last place at the same time, only the first processed request succeeds.
 
 ## 11. Appendix B — AI exchanges
 
