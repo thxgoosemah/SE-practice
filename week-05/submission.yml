@@ -13,8 +13,8 @@ schema: 1
 week: "05"
 student:
   name: Жағыпар Дидар Қанатұлы
-  student_id: 24B031027         # TODO (you): как в записях KBTU, например 00X000000
-  github: ZhagiparIIDidar             # TODO (you): ваш логин GitHub
+  student_id: 24B031027         #  (you): как в записях KBTU, например 00X000000
+  github: ZhagiparIIDidar             #  (you): ваш логин GitHub
 
 assistant:
   tool: Claude
@@ -25,16 +25,16 @@ language:
   path: A
 
 counts:
-  tests: 21            # TODO (you): сверьте с "Ran N tests" в вашем прогоне
-  v1_changed: no       # TODO (you): оставьте no, если после исправления отступа booking.py = booking_v1.py (проверьте строкой "identical to your final: yes" в чекере)
+  tests: 21            #  (you): сверьте с "Ran N tests" в вашем прогоне
+  v1_changed: no       #  (you): оставьте no, если после исправления отступа booking.py = booking_v1.py (проверьте строкой "identical to your final: yes" в чекере)
   change_log_rows: 1
 
 checker:
-  pass: 32               # TODO (you): из ПОСЛЕДНЕГО запуска чекера. Сейчас вывод был 8 / 2 / 22, но он устарел (IndentationError)
+  pass: 32               #  (you): из ПОСЛЕДНЕГО запуска чекера. Сейчас вывод был 8 / 2 / 22, но он устарел (IndentationError)
   fail: 0
   error: 0
-  commit: 7fdba22             # TODO (you): git rev-parse --short HEAD на коммите, где запускали чекер
-  known_fails: []      # TODO (you): ID, которые остались FAIL или ERROR в последнем прогоне; пусто только если прогон чистый
+  commit: 7fdba22             #  (you): git rev-parse --short HEAD на коммите, где запускали чекер
+  known_fails: []      #  (you): ID, которые остались FAIL или ERROR в последнем прогоне; пусто только если прогон чистый
 
 assumptions:
   non_integer_time: not-handled
@@ -49,5 +49,5 @@ review_findings:
 
 honesty:
   v1_unedited: yes     # TODO (you): оставьте yes, только если booking_v1.py совпадает с кодом из чата посимвольно
-  can_explain_overlap_without_ai: no   # TODO (you): yes или no, отвечайте честно
-  ai_usage_disclosed: yes               # TODO (you): yes, только когда AI_USAGE.md заполнен
+  can_explain_overlap_without_ai: no   #  (you): yes или no, отвечайте честно
+  ai_usage_disclosed: yes               #  (you): yes, только когда AI_USAGE.md заполнен
