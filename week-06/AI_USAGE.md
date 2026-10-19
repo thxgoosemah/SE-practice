@@ -23,5 +23,5 @@ availability — without the assistant:** yes / no
 **Anything I accepted from the AI without fully understanding it:**
 <!-- Name the file and the part. An honest entry here costs far less than a blank one that turns out to be untrue. -->
 
-Signed: <your name>
-Date:
+Signed: Zhanibek Zhomartuly 
+Date: 15.10.2026
