@@ -1,6 +1,6 @@
 @startuml
 left to right direction
-title Smart Campus - Room Booking (use cases, revised)
+title Smart Campus - Room Booking
 
 actor Student
 actor Administrator
@@ -15,17 +15,17 @@ rectangle "Smart Campus Room Booking" {
 }
 
 ' US-02
-Student --> UC_View
+Student -- UC_View
 ' US-01
-Student --> UC_Book
+Student -- UC_Book
 ' US-03 (own bookings only)
-Student --> UC_Cancel
+Student -- UC_Cancel
 ' US-04
-Administrator --> UC_Block
+Administrator -- UC_Block
 ' US-05
-Administrator --> UC_Unblock
+Administrator -- UC_Unblock
 ' US-06
-Administrator --> UC_Usage
+Administrator -- UC_Usage
 
 note right of UC_Book
   R1 time range, R2 no overlap, R3 room not blocked

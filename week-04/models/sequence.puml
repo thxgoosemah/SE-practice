@@ -1,14 +1,14 @@
 @startuml
-title Book room (revised)
+title Book room
 
 actor Student
 participant BookingService
 participant BookingRepository
 
-Student -> BookingService : bookRoom(roomId, start, end)
+Student -> BookingService : bookRoom(studentId, roomId, start, end)
 BookingService -> BookingService : checkTimeRange(start, end)
 alt time range invalid
-  BookingService --> Student : rejected - start not in future or duration not 0 to 2 hours (R1)
+  BookingService --> Student : rejected - start not in the future or duration not in (0, 2 h] (R1)
 else time range valid
   BookingService -> BookingRepository : findRoom(roomId)
   BookingRepository --> BookingService : room
@@ -20,6 +20,7 @@ else time range valid
     alt unavailable
       BookingService --> Student : rejected - room unavailable (R2)
     else created
+      note right of BookingService : new Booking: status ACTIVE, confirmationId generated
       BookingService -> BookingRepository : save(booking)
       BookingRepository --> BookingService : saved booking
       BookingService --> Student : confirmation (R4)

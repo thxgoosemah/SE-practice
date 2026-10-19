@@ -8,7 +8,7 @@ responsible for the accuracy of everything you submit, including every diagram a
 | Claude | Claude Sonnet 5.5 (claude-sonnet-5-5) | Task 1 — use-case draft | `models/original/use-case.puml` |
 | Claude | Claude Sonnet 5.5 (claude-sonnet-5-5) | Task 2 — class draft | `models/original/class.puml` |
 | Claude | Claude Sonnet 5.5 (claude-sonnet-5-5) | Task 3A — sequence draft | `models/original/sequence.puml` |
-| @@CRITIC_TOOL@@ | @@CRITIC_MODEL@@ | Critique of the revised diagrams | `lab-report.md` §6 |
+| Claude | Claude Sonnet 5.5 | Critique of the revised diagrams | `lab-report.md` §6 |
 | Claude | Claude Sonnet 5.5 (claude-sonnet-5-5) | Revised diagrams, worksheet sections §1–§5, §7, §8, §10 and this file, written for me from the original drafts; checked by me | `models/*.puml`, `lab-report.md`, `AI_USAGE.md`, `submission.yml` |
 
 **The files in `models/original/` are the AI's first replies, unedited:** yes. One caveat: the assistant answered the Task 1–3 prompts in a conversation that already contained the lab handout and my setup questions, not in a clean chat that started with the Part 0 message.
@@ -19,5 +19,7 @@ responsible for the accuracy of everything you submit, including every diagram a
 
 **Anything I accepted from the AI without fully understanding it:** none.
 
-Signed: @@NAME@@
+**Critique chat:** A new, separate chat (not the chat that drafted the diagrams). I pasted approved-stories.md and the three revised .puml files and sent the critique prompt unchanged.
+
+Signed: Zhomartuly Zhanibek
 Date: 2026-10-05
