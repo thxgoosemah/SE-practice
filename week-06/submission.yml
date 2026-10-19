@@ -1,0 +1,50 @@
+# week-06/submission.yml — your declaration for this lab.
+#
+# Facts only. Every explanation goes in lab-report.md; nothing here repeats prose.
+# Check it before you push:
+#
+#     python tests/validate_submission.py
+
+schema: 1
+week: "06"
+
+student:
+  name: Zhomartuly Zhanibek
+  student_id: 24b031040   # confirm this is your KBTU student ID (it was in the Group field of the report)
+  github: thxgoosemah                  # TODO: your GitHub username
+
+assistant:
+  tool: "Bolt.new"
+  model: "GLM 5.3 Flash"
+  fallback_reason: none
+
+bolt:
+  project_url: "https://bolt.new/p/72128193"
+
+counts:
+  issues: 5             # rows in lab-report.md section 5
+  cleanup_prompts: 2    # prompts sent after v1; change to 4 if you also send the data and supabase prompts
+  change_log_rows: 2    # rows in section 7; change to 4 if you add those two changes
+  v1_matches: 6         # T3, T4, T5, T7, T8, T9 (T1, T2, T6 were Not testable)
+  final_matches: 8      # T1, T3-T9; T2 is 9 if the data prompt fixes it
+
+checker:
+  pass: 26
+  fail: 1
+  error: 0
+  commit: 7fb7eb5              # git rev-parse --short HEAD, taken at the commit you ran the checker at
+  known_fails: [P3]       # every check still FAIL or ERROR, explained in lab-report.md section 9.1
+
+assumptions:
+  end_of_day: not-expressible
+
+review_findings:
+  - "T6 (AC1): v1 had no current-time input and used the system clock, so the case could not be set up; fixed with an editable Current time field in src/App.tsx"
+  - "T7 (AC6): v1 showed 'Start and end times are required.' for a malformed time such as 9:2 although both fields were filled; message reworded in src/availability.ts"
+  - "T1/T2 (AC4): v1 sample data in src/data.ts has no room whose only booking is 10:00-11:00, so touching and overlap could not be set up"
+  - "v1: package.json (line 14) lists @supabase/supabase-js although the scope has no backend or database (checker P3)"
+honesty:
+  v1_export_unedited: yes               # you said v1 was downloaded before any prompt; confirm
+  screenshots_unedited:  no               #  yes | no
+  can_explain_component_without_ai: no    #  yes | no
+  ai_usage_disclosed: yes                  #  yes | no, after AI_USAGE.md is complete
