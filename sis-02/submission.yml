@@ -1,0 +1,48 @@
+# SIS #02 — the declaration. FACTS ONLY: every explanation stays in report.md.
+#
+# Fill this in LAST, after your final run of the checker, then validate it:
+#     python tests/check_sis.py
+#     python tests/validate_submission.py
+#
+# Your checker numbers are re-run by the instructor at the head of your pull request.
+# Numbers that do not match what that commit produces cost the whole workflow criterion.
+# A FAIL you report honestly — here and under known_fails — costs nothing extra.
+#
+# Format rules: two spaces for indentation, never tabs. Leave the keys exactly as they are.
+
+schema: 1
+assignment: "sis-02"            # do not edit
+
+student:
+  name: Zhanibek Zhomartuly                       # as in the university register
+  student_id: 24B031040                  # e.g. 00X000000
+  group: CSCI-2208                       # your group code, as in the timetable
+  github: thxgoosemah                     # username only, not a URL
+
+assistant:
+  tool: Claude.ai                       # e.g. ChatGPT (web), Claude.ai, Gemini app, DeepSeek chat
+  model: Claude Sonnet 5.5                       # the exact model with its version, as the tool shows it in B1;
+                                # if the tool does not show it, write: not displayed
+
+checker:                        # from your LAST run of python tests/check_sis.py
+  pass: 44
+  fail: 0
+  error: 0
+  commit: 3fbf088                      # git rev-parse --short HEAD, run right after that checker run
+  
+counts:
+  stories: 3
+  criteria: 6
+  exchanges: 4
+  review_decisions: 3
+  source_checks: 5
+  explanation_words: 237
+  reflection_words: 187
+
+walkthroughs:
+  T1: pass
+  T2: pass
+  T3: pass
+  T4: pass
+
+known_fails: []

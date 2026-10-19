@@ -1,0 +1,81 @@
+@startuml
+title Course Registration — Sequence Diagram
+
+actor Student
+boundary "Course Catalog UI" as UI
+control "Registration Service" as RS
+database "Enrollment Database" as DB
+
+== Browse offerings ==
+
+Student -> UI: Browse offerings for semester
+UI -> RS: getOfferings(semester)
+RS -> DB: findOfferings(semester)
+DB --> RS: Offerings with available places
+RS --> UI: Catalog data
+UI --> Student: Display course details and availability
+
+== Register for an offering ==
+
+Student -> UI: Register for offering
+UI -> RS: register(studentId, offeringId)
+RS -> DB: Begin atomic registration transaction
+
+note over RS, DB
+Registration uses one transaction.
+Concurrent requests for the same offering
+must serialize the capacity decision
+or use an equivalent atomic conditional update.
+end note
+
+RS -> DB: Check offering exists
+alt Offering does not exist
+    DB --> RS: Rejected: offering not found
+    RS -> DB: Roll back transaction
+    RS --> UI: Registration rejected
+    UI --> Student: Explain rejection
+else Offering exists
+    RS -> DB: Check student authorization
+    alt Student is not authorized
+        DB --> RS: Rejected: unauthorized
+        RS -> DB: Roll back transaction
+        RS --> UI: Registration rejected
+        UI --> Student: Explain rejection
+    else Student is authorized
+        RS -> DB: Check UNIQUE(studentId, offeringId)
+        alt Student already enrolled
+            DB --> RS: Rejected: already enrolled
+            RS -> DB: Roll back transaction
+            RS --> UI: Registration rejected
+            UI --> Student: "Already enrolled"
+        else Student is not enrolled
+            RS -> DB: Atomically reserve a place\nif enrolledCount < capacity
+            alt No place remains
+                DB --> RS: Rejected: course full
+                RS -> DB: Roll back transaction
+                RS --> UI: Registration rejected
+                UI --> Student: "Course full"
+            else Place reserved
+                RS -> DB: Create Enrollment record
+                RS -> DB: Increment enrolledCount
+                note over DB
+                Enrollment creation and count update
+                commit together in one transaction.
+
+                Invariant:
+                enrolledCount equals the number
+                of Enrollment records for the offering.
+
+                If any operation fails, roll back
+                both changes.
+                end note
+                RS -> DB: Commit transaction
+                DB --> RS: Registration confirmed
+                RS --> UI: Confirmation
+                UI --> Student: Display confirmation
+            end
+        end
+    end
+end
+
+@enduml

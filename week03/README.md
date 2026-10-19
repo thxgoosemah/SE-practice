@@ -1,4 +1,5 @@
 # Practice #03 — Requirements Engineering with AI
+# WEEK 03 PR CHECKLINE
 
 **AI-Driven Software Engineering · KBTU SITE · Fall 2026**
 In class: 50 minutes · At home: about 60 minutes · Worth 1 point (4 × 0.25)

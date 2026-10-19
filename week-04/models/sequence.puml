@@ -1,0 +1,29 @@
+@startuml
+title Book room (revised)
+
+actor Student
+participant BookingService
+participant BookingRepository
+
+Student -> BookingService : bookRoom(roomId, start, end)
+BookingService -> BookingService : checkTimeRange(start, end)
+alt time range invalid
+  BookingService --> Student : rejected - start not in future or duration not 0 to 2 hours (R1)
+else time range valid
+  BookingService -> BookingRepository : findRoom(roomId)
+  BookingRepository --> BookingService : room
+  alt room blocked
+    BookingService --> Student : rejected - room is blocked (R3)
+  else room not blocked
+    BookingService -> BookingRepository : findActiveBookings(roomId, start, end)
+    BookingRepository --> BookingService : overlapping bookings
+    alt unavailable
+      BookingService --> Student : rejected - room unavailable (R2)
+    else created
+      BookingService -> BookingRepository : save(booking)
+      BookingRepository --> BookingService : saved booking
+      BookingService --> Student : confirmation (R4)
+    end
+  end
+end
+@enduml

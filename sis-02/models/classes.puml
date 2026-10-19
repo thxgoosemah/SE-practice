@@ -1,0 +1,65 @@
+@startuml
+title Course Registration — Domain Class Diagram
+
+class Student {
+  +studentId: UUID
+  +name: String
+  +isAuthorized: Boolean
+}
+
+class Course {
+  +courseCode: String
+  +title: String
+}
+
+class CourseOffering {
+  +offeringId: UUID
+  +semester: String
+  +capacity: Integer
+  +enrolledCount: Integer
+  +availablePlaces(): Integer
+}
+
+class Enrollment {
+  +enrollmentId: UUID
+  +createdAt: DateTime
+}
+
+Course "1" -- "0..*" CourseOffering : offered as
+CourseOffering "1" -- "0..*" Enrollment : has
+Student "1" -- "0..*" Enrollment : makes
+
+note right of CourseOffering
+Constraints:
+capacity >= 0
+0 <= enrolledCount <= capacity
+
+availablePlaces =
+capacity - enrolledCount
+
+Invariant:
+enrolledCount =
+number of Enrollment records
+for this offering
+
+Enrollment creation and enrolledCount
+update must commit or roll back together.
+end note
+
+note bottom of Enrollment
+Uniqueness constraint:
+UNIQUE(studentId, offeringId)
+
+Each enrollment belongs to
+exactly one student and one offering.
+end note
+
+note bottom of CourseOffering
+A CourseOffering identifies a course
+in a particular semester.
+
+Concurrent registrations must preserve
+the capacity and count invariants.
+end note
+
+@enduml
