@@ -1,0 +1,63 @@
+
+@startuml
+title Course Registration — Domain Class Diagram
+
+class Student {
+  +studentId: UUID
+  +name: String
+  +isAuthorized: Boolean
+}
+
+class Semester {
+  +semesterId: UUID
+  +name: String
+}
+
+class Course {
+  +courseCode: String
+  +title: String
+}
+
+class Offering {
+  +offeringId: UUID
+  +capacity: Integer
+  +enrolledCount: Integer
+  +availablePlaces(): Integer
+}
+
+class Enrollment {
+  +enrollmentId: UUID
+  +createdAt: DateTime
+}
+
+Semester "1" -- "0..*" Offering : contains
+Course "1" -- "0..*" Offering : offered as
+Offering "1" -- "0..*" Enrollment : has
+Student "1" -- "0..*" Enrollment : makes
+
+note right of Offering
+Constraint:
+capacity >= 0
+0 <= enrolledCount <= capacity
+
+availablePlaces =
+capacity - enrolledCount
+end note
+
+note bottom of Enrollment
+Uniqueness constraint:
+UNIQUE(studentId, offeringId)
+
+Each enrollment belongs to
+exactly one student and one offering.
+end note
+
+note bottom of Offering
+An offering identifies a course
+in a particular semester.
+
+Enrollment changes must preserve
+the capacity constraint.
+end note
+
+@enduml

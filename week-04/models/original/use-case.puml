@@ -1,0 +1,31 @@
+@startuml
+left to right direction
+title Smart Campus - Room Booking (use cases)
+
+actor Student
+actor Administrator
+
+rectangle "Smart Campus Room Booking" {
+  usecase "View room availability" as UC_View
+  usecase "Book room" as UC_Book
+  usecase "Cancel booking" as UC_Cancel
+  usecase "Block room" as UC_Block
+  usecase "Unblock room" as UC_Unblock
+  usecase "Review usage" as UC_Usage
+  usecase "Validate booking rules" as UC_Validate
+  usecase "Send confirmation" as UC_Confirm
+}
+
+Student --> UC_View
+Student --> UC_Book
+Student --> UC_Cancel
+Administrator --> UC_View
+Administrator --> UC_Block
+Administrator --> UC_Unblock
+Administrator --> UC_Usage
+
+' why: R1, R2 and R3 must be checked every time a booking is attempted
+UC_Book ..> UC_Validate : <<include>>
+' why: R4 - every successful booking confirms
+UC_Book ..> UC_Confirm : <<include>>
+@enduml

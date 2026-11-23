@@ -1,0 +1,51 @@
+
+@startuml
+title Course Registration — Sequence Diagram
+
+actor Student
+boundary "Course Catalog UI" as UI
+control "Registration Service" as RS
+database "Enrollment Database" as DB
+
+== Browse offerings ==
+
+Student -> UI: Browse offerings for semester
+UI -> RS: getOfferings(semester)
+RS -> DB: findOfferings(semester)
+DB --> RS: Offerings with available places
+RS --> UI: Catalog data
+UI --> Student: Display course details and availability
+
+== Register for an offering ==
+
+Student -> UI: Register for offering
+UI -> RS: register(studentId, offeringId)
+RS -> DB: atomicRegister(studentId, offeringId)
+
+note over DB
+Within one atomic transaction:
+1. Check offering exists and has capacity
+2. Check student is not already enrolled
+3. Create enrollment and update availability
+end note
+
+alt Offering does not exist
+    DB --> RS: Rejected: offering not found
+    RS --> UI: Registration rejected
+    UI --> Student: Explain rejection
+else Student already enrolled
+    DB --> RS: Rejected: already enrolled
+    RS --> UI: Registration rejected
+    UI --> Student: "Already enrolled"
+else Offering is full
+    DB --> RS: Rejected: course full
+    RS --> UI: Registration rejected
+    UI --> Student: "Course full"
+else Valid and capacity available
+    DB --> DB: Create Enrollment\nCommit transaction
+    DB --> RS: Registration confirmed
+    RS --> UI: Confirmation
+    UI --> Student: Display confirmation
+end
+
+@enduml

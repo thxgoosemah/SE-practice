@@ -1,0 +1,24 @@
+@startuml
+title Book room
+
+actor Student
+participant BookingService
+participant BookingRepository
+
+Student -> BookingService : bookRoom(roomId, start, end)
+activate BookingService
+BookingService -> BookingService : validateTimeRange(start, end)
+BookingService -> BookingRepository : isAvailable(roomId, start, end)
+activate BookingRepository
+BookingRepository --> BookingService : available / unavailable
+deactivate BookingRepository
+
+alt created
+  BookingService -> BookingRepository : save(booking)
+  BookingRepository --> BookingService : savedBooking
+  BookingService --> Student : confirmation
+else unavailable
+  BookingService --> Student : room unavailable
+end
+deactivate BookingService
+@enduml

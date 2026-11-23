@@ -1,0 +1,149 @@
+Paste ALL of this into a NEW chat (any assistant, new conversation). The last paragraph is the prompt.
+
+===== approved-stories.md =====
+# Approved stories — Smart Campus study room booking
+
+> **Replace this file's stories with your own Week 03 stories, as revised after review**
+> (`week-03/requirements/user-stories.md`), keeping their IDs. If you did not complete Week 03, or
+> your set was rejected in review, keep the reference set below and say so in `lab-report.md` §1.
+> Either way, the IDs here are the ones your consistency table (§7) must use.
+
+**Source of this set:** the reference set
+
+## Scenario (from the Lesson 04 practice deck, slide 7)
+
+Students view room availability, book a room, and cancel their own bookings. Administrators block
+or unblock rooms and review usage.
+
+- **R1** Future start, with duration greater than 0 and at most 2 hours.
+- **R2** Active bookings for the same room cannot overlap.
+- **R3** A blocked room cannot accept a new booking.
+- **R4** A successful booking produces a confirmation.
+
+## Reference set
+
+| ID | Story | Rules |
+| --- | --- | --- |
+| US-01 | As a student, I want to book a free study room for a time slot, so that I have a place to work, and I get a confirmation when the booking succeeds. | R1, R2, R3, R4 |
+| US-02 | As a student, I want to see which rooms are free at a given time, so that I can choose one before booking. | — |
+| US-03 | As a student, I want to cancel one of my own bookings, so that the room is released for others. | R2 |
+| US-04 | As an administrator, I want to block a room, so that no new bookings can be made for it. | R3 |
+| US-05 | As an administrator, I want to unblock a room, so that students can book it again. | R3 |
+| US-06 | As an administrator, I want to review how rooms are used, so that I can plan capacity. | — |
+
+**Out of scope** (do not model): payments, equipment in rooms, recurring bookings, waiting lists,
+notifications other than the booking confirmation, user registration.
+
+===== models/use-case.puml =====
+@startuml
+left to right direction
+title Smart Campus - Room Booking (use cases, revised)
+
+actor Student
+actor Administrator
+
+rectangle "Smart Campus Room Booking" {
+  usecase "View room availability" as UC_View
+  usecase "Book room" as UC_Book
+  usecase "Cancel booking" as UC_Cancel
+  usecase "Block room" as UC_Block
+  usecase "Unblock room" as UC_Unblock
+  usecase "Review usage" as UC_Usage
+}
+
+' US-02
+Student --> UC_View
+' US-01
+Student --> UC_Book
+' US-03 (own bookings only)
+Student --> UC_Cancel
+' US-04
+Administrator --> UC_Block
+' US-05
+Administrator --> UC_Unblock
+' US-06
+Administrator --> UC_Usage
+
+note right of UC_Book
+  R1 time range, R2 no overlap, R3 room not blocked
+  are checked inside Book room.
+  R4: success produces a confirmation.
+end note
+@enduml
+
+===== models/class.puml =====
+@startuml
+title Smart Campus - Domain Class Diagram (revised)
+
+enum BookingStatus {
+  ACTIVE
+  CANCELLED
+}
+
+class Student {
+  - studentId : String
+  - name : String
+}
+
+class Room {
+  - roomId : String
+  - name : String
+  - capacity : int
+  - blocked : boolean
+  + block() : void
+  + unblock() : void
+}
+
+class Booking {
+  - bookingId : String
+  - start : DateTime
+  - end : DateTime
+  - status : BookingStatus
+  - confirmationId : String
+  + overlaps(other : Booking) : boolean
+  + cancel() : void
+}
+
+Student "1" -- "0..*" Booking : makes
+Room "1" -- "0..*" Booking : is reserved by
+
+note right of Booking
+  R2: active bookings for the same room must not overlap.
+  Touching bookings (one ends when the next starts) do not overlap.
+  R1: start in the future, 0 < (end - start) <= 2 hours.
+  R4: confirmationId is set when a booking is created successfully.
+end note
+@enduml
+
+===== models/sequence.puml =====
+@startuml
+title Book room (revised)
+
+actor Student
+participant BookingService
+participant BookingRepository
+
+Student -> BookingService : bookRoom(roomId, start, end)
+BookingService -> BookingService : checkTimeRange(start, end)
+alt time range invalid
+  BookingService --> Student : rejected - start not in future or duration not 0 to 2 hours (R1)
+else time range valid
+  BookingService -> BookingRepository : findRoom(roomId)
+  BookingRepository --> BookingService : room
+  alt room blocked
+    BookingService --> Student : rejected - room is blocked (R3)
+  else room not blocked
+    BookingService -> BookingRepository : findActiveBookings(roomId, start, end)
+    BookingRepository --> BookingService : overlapping bookings
+    alt unavailable
+      BookingService --> Student : rejected - room unavailable (R2)
+    else created
+      BookingService -> BookingRepository : save(booking)
+      BookingRepository --> BookingService : saved booking
+      BookingService --> Student : confirmation (R4)
+    end
+  end
+end
+@enduml
+
+Compare my diagrams with the requirements. Identify missing rules, inconsistent names, and unjustified elements. Cite each issue and propose a specific correction.
