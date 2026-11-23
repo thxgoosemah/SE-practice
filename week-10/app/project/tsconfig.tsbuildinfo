@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/main.tsx","./src/types.ts","./src/components/BookingForm.tsx","./src/components/DecisionPanel.tsx","./src/components/RoomSelector.tsx","./src/components/RoomTimeline.tsx","./src/data/rooms.ts","./src/lib/checkAvailability.ts","./src/lib/time.ts"],"version":"5.9.3"}
